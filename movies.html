@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Rental Homework</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <style>
+        .container-top {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container container-top">
+        <p>MovieCo has released some data about all of their rentals in 2014. As a competitor, your job is to go though the data and get some insigts about your competitor!</p>
+        <p>Two questions are below, and we've retrieved the data for you... but it's probably not in the format you want. You'll have to go through and get the data to reveal the answers using your newfound skills with arrays, regex, and strings!</p>
+    </div>
+    <div class="container">
+        <table>
+            <tr>
+                <td>The user with the most checkouts is:</td>
+                <td><span id="most-checkouts"></span></td>
+            </tr>
+            <tr>
+                <td>The month with the most checkouts is:</td>
+                <td><span id="most-month"></span></td>
+            </tr>
+        </table>
+    </div>
+    <script>
+        /********
+                                		 This is boilerplate code to retrieve the movies and rental data from the server.
+                                		 Don't worry about how it works just yet (although you're welcome to read it).
+                                		 Head on down to "userFunction" below, which is where you'll write your code.
+                                		********/
+        function loadDoc(uri, callback) {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    callback.call(this, xmlhttp.responseText);
+                }
+            };
+            xmlhttp.open("GET", uri, true);
+            xmlhttp.send();
+        }
+        var rentalsArray;
+        var loadedRentals = function (rentalsJSON) {
+            rentalsArray = JSON.parse(rentalsJSON);
+            userFunction();
+        };
+        loadDoc("https://aerekos.herokuapp.com/getrentalsfile", loadedRentals);
+    </script>
+    <script>
+        function userFunction() {
+            /*
+            	Hey! This is where you'll write your code.
+
+            	The variable rentalsArray contains all of the rentals in the format:
+            	"Username Movie# Month"
+
+            	For example:
+            	"User2 43 March"
+
+            	Which means that "User2" rented movie number 43 (The Pianist) in March. You don't have
+            	the list of movie IDs yet - that's for tomorrow's homework!
+
+            	Your job is to answer the two questions:
+            	Which user had the most checkouts in 2014?
+            	Which month had the most checkouts in 2014?
+            **/
+
+            //Let's see what's inside...
+            //			console.log(rentalsArray);
+
+
+            //convert rentalsArray into objects
+
+            function MakeObject(userName, movie, date) {
+                this.userName = userName;
+                this.movie = movie;
+                this.date = date;
+            }
+
+            function convertToObjects() {
+                var objectArray = [];
+                var newArr = [];
+                for (var i = 0; i < rentalsArray.length; i++) {
+                    newArr.push(rentalsArray[i].split(" "));
+                    var current = newArr[i]
+                    var rental = new MakeObject(current[0], current[1], current[2]);
+                    objectArray.push(rental);
+                }
+                //                console.log(objectArray);
+                return objectArray;
+                //                console.log(newArr);
+            }
+            //            convertToObjects();
+
+
+            //filter through the objects array
+            //see how many users are repeated
+            //function that determines how many times each user shows up.
+
+            function createUserArray(objectArray) {
+                var userArray = [];
+                for (var i = 0; i < objectArray.length; i++) {
+                    userArray.push(objectArray[i].userName);
+                }
+                //                console.log(userArray);
+                return userArray;
+            }
+
+            //            createUserArray(convertToObjects());
+
+            function findPopUser(userArray) {
+                var prev;
+                var newSingleUserArray = [];
+                var countUserVisits = [];
+                userArray.sort();
+                for (var i = 0; i < userArray.length; i++) {
+                    if (userArray[i] !== prev) {
+                        newSingleUserArray.push(userArray[i]);
+                        countUserVisits.push(1);
+                    } else {
+                        countUserVisits[countUserVisits.length - 1]++;
+                    }
+                    prev = userArray[i];
+                }
+
+//                console.log(newSingleUserArray);
+//                console.log(countUserVisits);
+                returnMostFreqUser(countUserVisits, newSingleUserArray);
+
+            }
+
+
+            function returnMostFreqUser(countUserVisits, newSingleUserArray) {
+                var favoriteUser = 0;
+                for (var i = 0; i < countUserVisits.length; i++) {
+//                    console.log(countUserVisits[i]);
+                    if (countUserVisits[i] > favoriteUser) {
+                        favoriteUser = countUserVisits[i];
+                    }
+                }
+                var biggest = countUserVisits.indexOf(favoriteUser);
+                
+//                console.log(biggest);
+//                console.log(countUserVisits[24]);
+//                console.log(newSingleUserArray[24]);
+                document.getElementById('most-checkouts').innerHTML = newSingleUserArray[biggest];
+
+            }
+            findPopUser(createUserArray(convertToObjects()));
+            
+            //START MOVIE MONTHS
+            
+            function createMonthArray(objectArray) {
+                var monthArray = [];
+                for (var i = 0; i < objectArray.length; i++) {
+                    monthArray.push(objectArray[i].date);
+                }
+                console.log(monthArray);
+                return monthArray;
+            };
+            
+            function findPopMonth(monthArray) {
+                var prev;
+                var newSingleMonthArray = [];
+                var countMonthVisits = [];
+                monthArray.sort();
+                for (var i = 0; i < monthArray.length; i++) {
+                    if (monthArray[i] !== prev) {
+                        newSingleMonthArray.push(monthArray[i]);
+                        countMonthVisits.push(1);
+                    } else {
+                        countMonthVisits[countMonthVisits.length - 1]++;
+                    }
+                    prev = monthArray[i];
+                }
+
+                console.log(newSingleMonthArray);
+                console.log(countMonthVisits);
+                returnMostFreqMonth(countMonthVisits, newSingleMonthArray);
+            }
+
+
+            function returnMostFreqMonth(countMonthVisits, newSingleMonthArray) {
+                var favoriteMonth = 0;
+                for (var i = 0; i < countMonthVisits.length; i++) {
+//                    console.log(countUserVisits[i]);
+                    if (countMonthVisits[i] > favoriteMonth) {
+                        favoriteMonth = countMonthVisits[i];
+                    }
+                }
+                var biggest = countMonthVisits.indexOf(favoriteMonth);
+                
+                console.log(biggest);
+                console.log(countMonthVisits[2]);
+                console.log(newSingleMonthArray[2]);
+                document.getElementById('most-month').innerHTML = " " + newSingleMonthArray[biggest];
+
+            }
+            findPopMonth(createMonthArray(convertToObjects()));
+
+
+            /*
+            	Okay! Let's figure out which user had the most checkouts!
+
+            	First you'll want to go through the array, which is composed of strings,
+            	and figure out how to get just the parts you want.
+            */
+
+            /*
+            	Now that we have our data in a consumable format, we just need to iterate through the
+            	arrays and keep track of which user had the most checkouts.
+
+            	Hint: You'll probably need to create at least one more array to keep track of checkout counts per user or per month.
+
+            	Write your code to calculate the answers, and put the answers in place of the "???" below.
+            */
+
+            //Which user had the most checkouts.
+//            document.getElementById('most-checkouts').innerHTML = "User31";
+
+            //Which month has the most checkouts?
+//            document.getElementById('most-month').innerHTML = "December";
+        }
+    </script>
+</body>
+
+</html>
