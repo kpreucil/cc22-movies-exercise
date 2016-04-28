@@ -74,8 +74,24 @@
             //Let's see what's inside...
             //			console.log(rentalsArray);
 
+              /*
+            	Okay! Let's figure out which user had the most checkouts!
 
-            //convert rentalsArray into objects
+            	First you'll want to go through the array, which is composed of strings,
+            	and figure out how to get just the parts you want.
+            */
+
+            /*
+            	Now that we have our data in a consumable format, we just need to iterate through the
+            	arrays and keep track of which user had the most checkouts.
+
+            	Hint: You'll probably need to create at least one more array to keep track of checkout counts per user or per month.
+
+            	Write your code to calculate the answers, and put the answers in place of the "???" below.
+            */
+            
+
+            //START convert rentalsArray into objects
 
             function MakeObject(userName, movie, date) {
                 this.userName = userName;
@@ -97,11 +113,9 @@
                 //                console.log(newArr);
             }
             //            convertToObjects();
+            //END conversion
 
-
-            //filter through the objects array
-            //see how many users are repeated
-            //function that determines how many times each user shows up.
+            //START find most frequent User 
 
             function createUserArray(objectArray) {
                 var userArray = [];
@@ -154,7 +168,10 @@
             }
             findPopUser(createUserArray(convertToObjects()));
             
-            //START MOVIE MONTHS
+            //END find most frequent User
+            
+            
+            //START find most popular month
             
             function createMonthArray(objectArray) {
                 var monthArray = [];
@@ -189,37 +206,22 @@
             function returnMostFreqMonth(countMonthVisits, newSingleMonthArray) {
                 var favoriteMonth = 0;
                 for (var i = 0; i < countMonthVisits.length; i++) {
-//                    console.log(countUserVisits[i]);
                     if (countMonthVisits[i] > favoriteMonth) {
                         favoriteMonth = countMonthVisits[i];
                     }
                 }
                 var biggest = countMonthVisits.indexOf(favoriteMonth);
                 
-                console.log(biggest);
-                console.log(countMonthVisits[2]);
-                console.log(newSingleMonthArray[2]);
+//                console.log(biggest);
+//                console.log(countMonthVisits[2]);
+//                console.log(newSingleMonthArray[2]);
                 document.getElementById('most-month').innerHTML = " " + newSingleMonthArray[biggest];
 
             }
             findPopMonth(createMonthArray(convertToObjects()));
+            
+            //END find most popular month
 
-
-            /*
-            	Okay! Let's figure out which user had the most checkouts!
-
-            	First you'll want to go through the array, which is composed of strings,
-            	and figure out how to get just the parts you want.
-            */
-
-            /*
-            	Now that we have our data in a consumable format, we just need to iterate through the
-            	arrays and keep track of which user had the most checkouts.
-
-            	Hint: You'll probably need to create at least one more array to keep track of checkout counts per user or per month.
-
-            	Write your code to calculate the answers, and put the answers in place of the "???" below.
-            */
 
             //Which user had the most checkouts.
 //            document.getElementById('most-checkouts').innerHTML = "User31";

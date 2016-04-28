@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Movie Rental Homework</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <style>
+        .container-top {
+            margin-top: 20px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container container-top">
+        <p>MovieCo has released some data about all of their rentals in 2014. As a competitor, your job is to go though the data and get some insigts about your competitor!</p>
+        <p>Two questions are below, and we've retrieved the data for you... but it's probably not in the format you want. You'll have to go through and get the data to reveal the answers using your newfound skills with arrays, regex, and strings!</p>
+    </div>
+    <div class="container">
+        <table>
+            <tr>
+                <td>The user with the most checkouts is:</td>
+                <td><span id="most-checkouts"></span></td>
+            </tr>
+            <tr>
+                <td>The month with the most checkouts is:</td>
+                <td><span id="most-month"></span></td>
+            </tr>
+        </table>
+    </div>
+    <script>
+        /********
+                                        		 This is boilerplate code to retrieve the movies and rental data from the server.
+                                        		 Don't worry about how it works just yet (although you're welcome to read it).
+                                        		 Head on down to "userFunction" below, which is where you'll write your code.
+                                        		********/
+        function loadDoc(uri, callback) {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    callback.call(this, xmlhttp.responseText);
+                }
+            };
+            xmlhttp.open("GET", uri, true);
+            xmlhttp.send();
+        }
+        var rentalsArray;
+        var loadedRentals = function (rentalsJSON) {
+            rentalsArray = JSON.parse(rentalsJSON);
+            userFunction();
+        };
+        loadDoc("https://aerekos.herokuapp.com/getrentalsfile", loadedRentals);
+    </script>
+    <script>
+        function userFunction() {
+            /*
+            	Hey! This is where you'll write your code.
+
+            	The variable rentalsArray contains all of the rentals in the format:
+            	"Username Movie# Month"
+
+            	For example:
+            	"User2 43 March"
+
+            	Which means that "User2" rented movie number 43 (The Pianist) in March. You don't have
+            	the list of movie IDs yet - that's for tomorrow's homework!
+
+            	Your job is to answer the two questions:
+            	Which user had the most checkouts in 2014?
+            	Which month had the most checkouts in 2014?
+            **/
+
+            //Let's see what's inside...
+            //			console.log(rentalsArray);
+
+            /*
+            	Okay! Let's figure out which user had the most checkouts!
+
+            	First you'll want to go through the array, which is composed of strings,
+            	and figure out how to get just the parts you want.
+            */
+
+            /*
+            	Now that we have our data in a consumable format, we just need to iterate through the
+            	arrays and keep track of which user had the most checkouts.
+
+            	Hint: You'll probably need to create at least one more array to keep track of checkout counts per user or per month.
+
+            	Write your code to calculate the answers, and put the answers in place of the "???" below.
+            */
+
+
+            var testRentals = [
+               "User5 44 July",
+               "User5 36 June",
+               "User7 12 May",
+               "User8 13 July"
+           ];
+
+            //Create an array of Users
+            function splitUserRow(stringUser) {
+                return stringUser.split(" ");
+            }
+
+            var usersAsArrays = [];
+            for (var i = 0; i < testRentals.length; i++) {
+                usersAsArrays.push(splitUserRow(testRentals[i]));
+            }
+            //testRentals = testRentals.map(splitUserRow); //accomplishes the same thing as above for loop
+
+            //Finish creating array of Users.
+
+            //Create an array of objects
+
+           function splitUserRow(stringUser) {
+				return stringUser.split(" ");
+			}
+            //tests
+			console.log( splitUserRow(testRentals[0]) [0] == "User5");
+			console.log( splitUserRow(testRentals[0]) [1] == "44");
+			console.log( splitUserRow(testRentals[0]) [2] == "July");
+			
+			//testRentals = testRentals.map(splitUserRow);
+			
+			function splitRentalString(rentalAsString) {
+				var asArrays = [];
+				for (var i = 0; i < rentalAsString.length; i++) {
+					asArrays.push(splitUserRow(rentalAsString[i]));
+				}
+                return asArrays;
+			}
+			
+            // create object
+			function getUserWithMostCheckouts(rentals) {
+				debugger;
+				var counts = {};
+				var rentalsAsArrays = getUsersAsArrays(rentals);
+				for (var i = 0; i < rentalsAsArrays.length; i++){
+					var userNum = rentalsAsArrays[i][0];
+                    if(counts[userNum] == undefined){ //hasn't seen this object yet so add one (see below);
+                        counts[userNum] = 1; //1 becomes the key for userNum in the object
+                    } else {
+                        counts[userNum] += 1; //if we see it again adds another number.
+                    }
+				}
+                return getKeyWithMaxValue(counts)
+			}
+            
+            function getKeyWithMaxValue(obj) {
+                var maxSoFar = 0;
+                var maxKeySoFar = ""; //store value
+                for (var key in obj) { //key is equal to username
+                    if (obj[key] > maxSoFar) {
+                        maxSoFar = obj[key];
+                        maxKeySoFar = key;
+                    }
+                }
+                return maxKeySoFar;
+            }
+            //test (typically written separatley)
+            console.log(getKeyWithMaxValue({
+                "a" : 2,
+                "b" : 4,
+                "c" : 3
+            })=="b");
+			
+			console.log(getUserWithMostCheckouts(testRentals) == "User5");
+//			console.log(getMonthWithMostCheckouts(testRentals) == "July");
+
+			//Which user had the most checkouts.
+            var maxUser = getUserWithMostCheckouts();
+			document.getElementById('most-checkouts').innerHTML = maxUser;
+
+			//Which month has the most checkouts?
+			document.getElementById('most-month').innerHTML = "???";
+            //testRentals = testRentals.map(splitUserRow); //accomplishes the same thing as above for loop
+
+        }
+    </script>
+</body>
+
+</html>

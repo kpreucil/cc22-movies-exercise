@@ -89,12 +89,45 @@
 
 			//Let's see what's inside...
 			console.log(moviesArray);
-			console.log(rentalsArray);
+			//console.log(rentalsArray);
 
 			/*
 				A hint: Think about how to index your movie names so that it's easy to
 				look up which movie has which id.
 			*/
+            
+            //splits the string up
+            function splitMovieRow(stringMovie) {
+                newMovieArray = [];
+                newMovieArray.push(stringMovie.split(" "));
+                console.log(newMovieArray);
+               return newMovieArray;  
+			};
+            
+            //take away movie number       
+            function parceMovieNum (movieTitle) {
+                //debugger;
+                var movieTitleArray = [];
+                console.log(newMovieArray);
+                //for (var i = 0, i < movieTitle.length; i++){
+                    movieTitleArray.push(movieTitle[i].shift());
+               // }
+                console.log(movieTitleArray);
+            };
+            
+            
+            function splitRentalString(rentalAsString) {
+				var asArrays = [];
+				for (var i = 0; i < rentalAsString.length; i++) {
+					asArrays.push(splitMovieRow(rentalAsString[i]));
+                
+				}
+                //console.log(asArrays);
+                
+                return asArrays;
+			}
+            splitRentalString(moviesArray);
+            
 
 			//Which movie was the most checked-out movie of 2014?
 			document.getElementById('most-movie').innerHTML = "???";
