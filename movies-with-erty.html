@@ -133,9 +133,9 @@
 			
             // create object
 			function getUserWithMostCheckouts(rentals) {
-				debugger;
+//				debugger;
 				var counts = {};
-				var rentalsAsArrays = getUsersAsArrays(rentals);
+				var rentalsAsArrays = splitRentalString(rentals);
 				for (var i = 0; i < rentalsAsArrays.length; i++){
 					var userNum = rentalsAsArrays[i][0];
                     if(counts[userNum] == undefined){ //hasn't seen this object yet so add one (see below);

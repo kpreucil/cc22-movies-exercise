@@ -1,143 +1,277 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-	<meta charset="UTF-8">
-	<title>Movie Rental Homework</title>
-	<link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
-	<style>
-		.container-top {
-			margin-top: 20px;
-		}
-	</style>
+    <meta charset="UTF-8">
+    <title>Movie Rental Homework</title>
+    <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <style>
+        .container-top {
+            margin-top: 20px;
+        }
+    </style>
 </head>
+
 <body>
-	<div class="container container-top">
-		<p>Your competitor, MovieCo, has released even more data about their rentals in 2014! Now you have the information about which movies were the most popular.</p>
-		<p>There's three more questions below for you to answer and become the #1 movie company in the world.</p>
-		<!-- <p>*Evil Laugh*</p> -->
-	</div>
-	<div class="container">
-		<table>
-			<tr>
-				<td>The most checked-out movie of 2014 was</td>
-				<td><span id="most-movie"></span></td>
-			</tr>
-			<tr>
-				<td>The least checked-out movie of 2014 was</td>
-				<td><span id="least-movie"></span></td>
-			</tr>
-			<tr>
-				<td>The favorite movie (most checkouts) for the user with the most checkouts in 2014 was</td>
-				<td><span id="favorite-movie"></span></td>
-			</tr>
-		</table>
-	</div>
-	<script>
-		/********
-		 This is boilerplate code to retrieve the movies and rental data from the server.
-		 Don't worry about how it works just yet (although you're welcome to read it).
-		 Head on down to "userFunction" below, which is where you'll write your code.
-		********/
-		function loadDoc(uri, callback) {
-			var xmlhttp = new XMLHttpRequest();
-			xmlhttp.onreadystatechange = function() {
-				if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
-					callback.call(this, xmlhttp.responseText);
-				}
-			};
-			xmlhttp.open("GET", uri, true);
-			xmlhttp.send();
-		}
-		var rentalsArray, moviesArray, loadedCount = 0;
-		var loadedRentals = function(rentalsJSON) {
-			rentalsArray = JSON.parse(rentalsJSON);
-			loadedCount += 1;
-			if (loadedCount == 2) {
-				userFunction();
-			}
-		};
-		var loadedMovies = function(moviesJSON) {
-			moviesArray = JSON.parse(moviesJSON);
-			loadedCount += 1;
-			if (loadedCount == 2) {
-				userFunction();
-			}
-		};
-		loadDoc("https://aerekos.herokuapp.com/getmoviesfile", loadedMovies);
-		loadDoc("https://aerekos.herokuapp.com/getrentalsfile", loadedRentals);
-	</script>
-	<script>
-		function userFunction() {
-			/*
-				Again, here is where you'll write your code.
+    <div class="container container-top">
+        <p>Your competitor, MovieCo, has released even more data about their rentals in 2014! Now you have the information about which movies were the most popular.</p>
+        <p>There's three more questions below for you to answer and become the #1 movie company in the world.</p>
+        <!-- <p>*Evil Laugh*</p> -->
+    </div>
+    <div class="container">
+        <table>
+            <tr>
+                <td>The most checked-out movie of 2014 was</td>
+                <td><span id="most-movie"></span></td>
+            </tr>
+            <tr>
+                <td>The least checked-out movie of 2014 was</td>
+                <td><span id="least-movie"></span></td>
+            </tr>
+            <tr>
+                <td>The favorite movie (most checkouts) for the user with the most checkouts in 2014 was</td>
+                <td><span id="favorite-movie"></span></td>
+            </tr>
+        </table>
+    </div>
+    <script>
+        /********
+                                                		 This is boilerplate code to retrieve the movies and rental data from the server.
+                                                		 Don't worry about how it works just yet (although you're welcome to read it).
+                                                		 Head on down to "userFunction" below, which is where you'll write your code.
+                                                		********/
+        function loadDoc(uri, callback) {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                    callback.call(this, xmlhttp.responseText);
+                }
+            };
+            xmlhttp.open("GET", uri, true);
+            xmlhttp.send();
+        }
+        var rentalsArray, moviesArray, loadedCount = 0;
+        var loadedRentals = function (rentalsJSON) {
+            rentalsArray = JSON.parse(rentalsJSON);
+            loadedCount += 1;
+            if (loadedCount == 2) {
+                userFunction();
+            }
+        };
+        var loadedMovies = function (moviesJSON) {
+            moviesArray = JSON.parse(moviesJSON);
+            loadedCount += 1;
+            if (loadedCount == 2) {
+                userFunction();
+            }
+        };
+        loadDoc("https://aerekos.herokuapp.com/getmoviesfile", loadedMovies);
+        loadDoc("https://aerekos.herokuapp.com/getrentalsfile", loadedRentals);
+    </script>
+    <script>
+        function userFunction() {
+            /*
+            	Again, here is where you'll write your code.
 
-				rentalsArray is in the same format as yesterday.
+            	rentalsArray is in the same format as yesterday.
 
-				moviesArray is in a similar format, with each line matching
-				"MovieID MovieName"
+            	moviesArray is in a similar format, with each line matching
+            	"MovieID MovieName"
 
-				For Example,
-				"46 Gladiator"
+            	For Example,
+            	"46 Gladiator"
 
-				Which means that movie ID 46 is the 2000 action/drama starring Russel Crowe.
+            	Which means that movie ID 46 is the 2000 action/drama starring Russel Crowe.
 
-				Your job is to answer the questions:
-				Which movie was the most checked-out movie of 2014?
-				Which movie was the least checked-out movie of 2014?
-				For the user with the most checkouts, which movie did they checkout the most?
-			**/
+            	Your job is to answer the questions:
+            	Which movie was the most checked-out movie of 2014?
+            	Which movie was the least checked-out movie of 2014?
+            	For the user with the most checkouts, which movie did they checkout the most?
+            **/
 
-			//Let's see what's inside...
-			console.log(moviesArray);
-			//console.log(rentalsArray);
+            //Let's see what's inside...
+            console.log(moviesArray);
+            console.log(rentalsArray);
 
-			/*
-				A hint: Think about how to index your movie names so that it's easy to
-				look up which movie has which id.
-			*/
-            
+            /*
+            	A hint: Think about how to index your movie names so that it's easy to
+            	look up which movie has which id.
+            */
+
+            /** Sarah Help/Suggestions
+                function makemyarray(giantarr) {
+                    var newarr = [];
+
+                    for wahtever {
+                        var emptyarr = [];
+                        var splitarr = giantarr[i].split(" ");
+                        var number = splitarr[0];
+                        splitarr.splice(1, sliptarr.length)
+
+                        emptyarr.push(number, spliced)
+                        newarr.push(emptyarry)
+                    }
+                }
+            **/
+
             //splits the string up
-            function splitMovieRow(stringMovie) {
-                newMovieArray = [];
-                newMovieArray.push(stringMovie.split(" "));
-                console.log(newMovieArray);
-               return newMovieArray;  
-			};
-            
-            //take away movie number       
-            function parceMovieNum (movieTitle) {
-                //debugger;
-                var movieTitleArray = [];
-                console.log(newMovieArray);
-                //for (var i = 0, i < movieTitle.length; i++){
-                    movieTitleArray.push(movieTitle[i].shift());
-               // }
-                console.log(movieTitleArray);
+            //                        function splitMovieRow(stringMovie) {
+            //                            newMovieArray = [];
+            //                            newMovieArray.push(stringMovie.split(" "));
+            //                            console.log(newMovieArray);
+            //                            return newMovieArray;
+            //                        };
+            //            
+            //                        //take away movie number       
+            //                        function parceMovieNum(movieTitle) {
+            //                            //debugger;
+            //                            var movieTitleArray = [];
+            //                            console.log(newMovieArray);
+            //                            //for (var i = 0, i < movieTitle.length; i++){
+            //                            movieTitleArray.push(movieTitle[i].shift());
+            //                            // }
+            //                            console.log(movieTitleArray);
+
+            //            //Make moviesArray into an array of arrays
+            //            function makeNewMovieArray(mainArray) {
+            //                var newMovieArray = [];
+            //
+            //                for (var i = 0; i < mainArray.length; i++) {
+            //                    var emptyArr = [];
+            //                    var splitArr = mainArray[i].split(" ");
+            //                    var movieID = splitArr[0];
+            //                    splitArr.splice(1, splitArr.length);
+            //
+            //                    emptyArr.push(movieID, spliced);
+            //                    newMovieArray.push(emptyarry);
+            //                    return newMovieArray;
+            //                }
+            //            };
+            //            
+            //                        };
+
+
+            function splitArray(string) {
+                return string.split(" ");
+            };
+
+            function splitRentalString(rentalAsString) {
+                var asArrays = [];
+                for (var i = 0; i < rentalAsString.length; i++) {
+                    asArrays.push(splitArray(rentalAsString[i]));
+                }
+                //console.log(asArrays);
+
+                return asArrays;
+            }
+            //console.log(splitRentalString(rentalsArray));
+
+
+            // create object
+            function getMovieWithMostCheckouts(rentals) {
+                //				debugger;
+                var counts = {};
+                var rentalsAsArrays = splitRentalString(rentals);
+                for (var i = 0; i < rentalsAsArrays.length; i++) {
+                    var userNum = rentalsAsArrays[i][1];
+                    if (counts[userNum] == undefined) { //hasn't seen this object yet so add one (see below);
+                        counts[userNum] = 1; //1 becomes the key for userNum in the object
+                    } else {
+                        counts[userNum] += 1; //if we see it again adds another number.
+                    }
+                }
+                //console.log(counts)
+                return moviesArray[getKeyWithMaxValue(counts) - 1];
+            }
+
+            function getMovieWithLeastCheckouts(rentals) {
+                //				debugger;
+                var counts = {};
+                var rentalsAsArrays = splitRentalString(rentals);
+                for (var i = 0; i < rentalsAsArrays.length; i++) {
+                    var userNum = rentalsAsArrays[i][1];
+                    if (counts[userNum] == undefined) { //hasn't seen this object yet so add one (see below);
+                        counts[userNum] = 100; //1 becomes the key for userNum in the object
+                    } else {
+                        counts[userNum] -= 1; //if we see it again adds another number.
+                    }
+                }
+                //console.log(counts)
+                return moviesArray[getKeyWithMaxValue(counts) - 1];
+            }
+
+            console.log(getMovieWithMostCheckouts(rentalsArray));
+
+            function getKeyWithMaxValue(obj) {
+                var maxSoFar = 0;
+                var maxKeySoFar = ""; //store value
+                for (var key in obj) { //key is equal to username
+                    if (obj[key] > maxSoFar) {
+                        maxSoFar = obj[key];
+                        maxKeySoFar = key;
+                    }
+                }
+                return maxKeySoFar;
+            };
+
+            function getUserWithMostCheckouts(rentals) {
+                //				debugger;
+                var counts = {};
+                var rentalsAsArrays = splitRentalString(rentals);
+                for (var i = 0; i < rentalsAsArrays.length; i++) {
+                    var userNum = rentalsAsArrays[i][0];
+                    if (counts[userNum] == undefined) { //hasn't seen this object yet so add one (see below);
+                        counts[userNum] = 1; //1 becomes the key for userNum in the object
+                    } else {
+                        counts[userNum] += 1; //if we see it again adds another number.
+                    }
+                }
+                console.log(counts)
+                var mostUser = getKeyWithMaxValue(counts);
+                var favUser = findMostUserRentals(mostUser);
+               return handleFavUser(favUser);
+                                //console.log(getMovieWithMostCheckouts(favUser));
+            }
+            console.log(getUserWithMostCheckouts(rentalsArray));
+
+            function findMostUserRentals(user) {
+                var favUserArray = [];
+                var rentalsAsArrays = splitRentalString(rentalsArray);
+                for (var i = 0; i < rentalsAsArrays.length; i++) {
+                    if (rentalsAsArrays[i][0] == user) {
+                        favUserArray.push(rentalsAsArrays[i]);
+                    }
+                }
+                //console.log(favUserArray);
+                return favUserArray;
             };
             
-            
-            function splitRentalString(rentalAsString) {
-				var asArrays = [];
-				for (var i = 0; i < rentalAsString.length; i++) {
-					asArrays.push(splitMovieRow(rentalAsString[i]));
-                
-				}
-                //console.log(asArrays);
-                
-                return asArrays;
-			}
-            splitRentalString(moviesArray);
-            
+            function handleFavUser (user) {
+                var counts = {};
+                for (var i = 0; i < user.length; i++) {
+                    var userNum = user[i][1];
+                    if (counts[userNum] == undefined) { //hasn't seen this object yet so add one (see below);
+                        counts[userNum] = 1; //1 becomes the key for userNum in the object
+                    } else {
+                        counts[userNum] += 1; //if we see it again adds another number.
+                    }
+                }
+                console.log(getKeyWithMaxValue(counts));
+               return moviesArray[getKeyWithMaxValue(counts) - 1]
+                //return getKeyWithMaxValue(counts);
+            };
 
-			//Which movie was the most checked-out movie of 2014?
-			document.getElementById('most-movie').innerHTML = "???";
 
-			//Which movie was the least checked-out movie of 2014?
-			document.getElementById('least-movie').innerHTML = "???";
+            //Which movie was the most checked-out movie of 2014?
+            document.getElementById('most-movie').innerHTML = getMovieWithMostCheckouts(rentalsArray);
 
-			//For the user with the most checkouts, which movie did they checkout the most?
-			document.getElementById('favorite-movie').innerHTML = "???";
-		}
-	</script>
+            //Which movie was the least checked-out movie of 2014?
+            document.getElementById('least-movie').innerHTML = getMovieWithLeastCheckouts(rentalsArray);
+
+            //For the user with the most checkouts, which movie did they checkout the most?
+            document.getElementById('favorite-movie').innerHTML = getUserWithMostCheckouts(rentalsArray);
+        }
+    </script>
 </body>
+
 </html>
